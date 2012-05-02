@@ -4,11 +4,11 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ASPNETDBModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+    <Schema Namespace="ASPNETDBModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
         <EntityContainer Name="ASPNETDBModelStoreContainer">
           <EntitySet Name="aspnet_Membership" EntityType="ASPNETDBModel.Store.aspnet_Membership" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="aspnet_Users" EntityType="ASPNETDBModel.Store.aspnet_Users" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="UserIdentity" EntityType="ASPNETDBModel.Store.UserIdentity" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="UserIdentities" EntityType="ASPNETDBModel.Store.UserIdentities" store:Type="Tables" Schema="dbo" />
           <AssociationSet Name="FK__aspnet_Me__UserI__22AA2996" Association="ASPNETDBModel.Store.FK__aspnet_Me__UserI__22AA2996">
             <End Role="aspnet_Users" EntitySet="aspnet_Users" />
             <End Role="aspnet_Membership" EntitySet="aspnet_Membership" />
@@ -38,7 +38,7 @@
           <Property Name="FailedPasswordAttemptWindowStart" Type="datetime" Nullable="false" />
           <Property Name="FailedPasswordAnswerAttemptCount" Type="int" Nullable="false" />
           <Property Name="FailedPasswordAnswerAttemptWindowStart" Type="datetime" Nullable="false" />
-          <Property Name="Comment" Type="ntext" />
+          <Property Name="Comment" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="aspnet_Users">
           <Key>
@@ -52,7 +52,7 @@
           <Property Name="IsAnonymous" Type="bit" Nullable="false" />
           <Property Name="LastActivityDate" Type="datetime" Nullable="false" />
         </EntityType>
-        <EntityType Name="UserIdentity">
+        <EntityType Name="UserIdentities">
           <Key>
             <PropertyRef Name="IdentityID" />
           </Key>
@@ -73,19 +73,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ASPNETDBModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
         <EntityContainer Name="ASPNETDBEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="aspnet_Membership" EntityType="ASPNETDBModel.aspnet_Membership" />
           <EntitySet Name="aspnet_Users" EntityType="ASPNETDBModel.aspnet_Users" />
-          <EntitySet Name="UserIdentities" EntityType="ASPNETDBModel.UserIdentity" />
           <AssociationSet Name="FK__aspnet_Me__UserI__22AA2996" Association="ASPNETDBModel.FK__aspnet_Me__UserI__22AA2996">
             <End Role="aspnet_Users" EntitySet="aspnet_Users" />
             <End Role="aspnet_Membership" EntitySet="aspnet_Membership" />
           </AssociationSet>
+          <EntitySet Name="UserIdentities" EntityType="ASPNETDBModel.UserIdentity" />
         </EntityContainer>
         <EntityType Name="aspnet_Membership">
           <Key>
@@ -127,15 +126,6 @@
           <Property Name="LastActivityDate" Type="DateTime" Nullable="false" />
           <NavigationProperty Name="aspnet_Membership" Relationship="ASPNETDBModel.FK__aspnet_Me__UserI__22AA2996" FromRole="aspnet_Users" ToRole="aspnet_Membership" />
         </EntityType>
-        <EntityType Name="UserIdentity">
-          <Key>
-            <PropertyRef Name="IdentityID" />
-          </Key>
-          <Property Name="IdentityID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserId" Type="Guid" Nullable="false" />
-          <Property Name="IdentityProvider" Type="String" Nullable="false" MaxLength="255" Unicode="true" FixedLength="false" />
-          <Property Name="IdentityValue" Type="String" Nullable="false" MaxLength="255" Unicode="true" FixedLength="false" />
-        </EntityType>
         <Association Name="FK__aspnet_Me__UserI__22AA2996">
           <End Role="aspnet_Users" Type="ASPNETDBModel.aspnet_Users" Multiplicity="1" />
           <End Role="aspnet_Membership" Type="ASPNETDBModel.aspnet_Membership" Multiplicity="0..1" />
@@ -148,6 +138,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="UserIdentity">
+          <Key>
+            <PropertyRef Name="IdentityID" />
+          </Key>
+          <Property Type="Int32" Name="IdentityID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Guid" Name="UserId" Nullable="false" />
+          <Property Type="String" Name="IdentityProvider" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="IdentityValue" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -186,12 +185,16 @@
             <ScalarProperty Name="IsAnonymous" ColumnName="IsAnonymous" />
             <ScalarProperty Name="LastActivityDate" ColumnName="LastActivityDate" />
           </MappingFragment></EntityTypeMapping></EntitySetMapping>
-          <EntitySetMapping Name="UserIdentities"><EntityTypeMapping TypeName="ASPNETDBModel.UserIdentity"><MappingFragment StoreEntitySet="UserIdentity">
-            <ScalarProperty Name="IdentityID" ColumnName="IdentityID" />
-            <ScalarProperty Name="UserId" ColumnName="UserId" />
-            <ScalarProperty Name="IdentityProvider" ColumnName="IdentityProvider" />
-            <ScalarProperty Name="IdentityValue" ColumnName="IdentityValue" />
-          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="UserIdentities">
+            <EntityTypeMapping TypeName="ASPNETDBModel.UserIdentity">
+              <MappingFragment StoreEntitySet="UserIdentities">
+                <ScalarProperty Name="IdentityValue" ColumnName="IdentityValue" />
+                <ScalarProperty Name="IdentityProvider" ColumnName="IdentityProvider" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="IdentityID" ColumnName="IdentityID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -213,13 +216,13 @@
     <!-- Diagram content (shape and connector positions) -->
     <Diagrams>
       <Diagram Name="AspnetDB">
-        <EntityTypeShape EntityType="ASPNETDBModel.aspnet_Membership" Width="1.5" PointX="3" PointY="1.125" Height="5.2494108072916674" IsExpanded="true" />
+        <EntityTypeShape EntityType="ASPNETDBModel.aspnet_Membership" Width="2" PointX="3" PointY="1.125" Height="5.2494108072916674" IsExpanded="true" />
         <EntityTypeShape EntityType="ASPNETDBModel.aspnet_Users" Width="1.5" PointX="0.75" PointY="2.375" Height="2.5571907552083322" IsExpanded="true" />
-        <EntityTypeShape EntityType="ASPNETDBModel.UserIdentity" Width="1.5" PointX="5.75" PointY="0.75" Height="1.7879850260416665" IsExpanded="true" />
         <AssociationConnector Association="ASPNETDBModel.FK__aspnet_Me__UserI__22AA2996" ManuallyRouted="false">
           <ConnectorPoint PointX="2.25" PointY="3.6535953776041659" />
           <ConnectorPoint PointX="3" PointY="3.6535953776041659" />
         </AssociationConnector>
+        <EntityTypeShape EntityType="ASPNETDBModel.UserIdentity" Width="1.5" PointX="5.75" PointY="1.5" Height="1.7879850260416657" />
       </Diagram>
     </Diagrams>
   </Designer>
