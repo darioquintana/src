@@ -1,0 +1,87 @@
+﻿/*
+// Copyright 2010 Microsoft Corporation
+// Licensed under the Apache License, Version 2.0 (the "License"); 
+// You may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0 
+
+// THIS CODE IS PROVIDED *AS IS* BASIS, WITHOUT WARRANTIES OR 
+// CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED, 
+// INCLUDING WITHOUT LIMITATION ANY IMPLIED WARRANTIES OR 
+// CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE, 
+// MERCHANTABLITY OR NON-INFRINGEMENT. 
+
+// See the Apache 2 License for the specific language governing 
+// permissions and limitations under the License.
+*/
+
+/* Styles for the Hrd Page
+----------------------------------------------------------*/
+#identity-provider-content
+{
+    width:250px;
+    text-align:center;   
+    float:left;
+   
+}
+
+#identity-providers
+{
+    text-align:center;
+    width:100%;
+}
+
+div.identity-provider
+{
+
+    text-align:center;
+    margin: 10px 0px 10px 0px;
+}
+
+div.identity-provider button
+{
+    padding:10px;
+    width:150px;
+    vertical-align:middle;
+}
+
+#AssociationMessage
+{
+    border: 1px solid #4F8A10;
+    background-color: #DFF2BF;
+    color:#4F8A10;
+    padding:5px;
+    width:400px;
+}
+
+.provider-content-hidden
+{
+    display:none;
+}
+
+#AssociateMessageActions,AssociateMessageRegisterActions
+{
+    float:right;
+}
+#AssociateMessageText, AssociateMessageRegisterText
+{
+    float:left;
+}
+
+#AssociateMessageRegisterActions
+{
+    float:right;
+}
+
+#AssociateMessageRegisterText
+{
+    float:left;
+}
+
+#AssociationMessageRegister
+{
+    border: 1px solid #9F6000;
+    background-color: #FEEFB3;
+    color:#9F6000;
+    padding:5px;
+    width:400px;
+}
